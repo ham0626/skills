@@ -34,25 +34,28 @@
 
 ## 怎么用
 
-### 方式一：直接装到 WorkBuddy（推荐）
+### 本机已装好（目录联接）
 
-把整个 `skills/` 目录下的目标 skill 拷进 WorkBuddy 的用户级 skill 目录：
+本机的 skill 安装位置已经指向这个仓库：
+
+```
+C:\Users\15328\.workbuddy\skills\course-report
+  →（junction）→ D:\03coding\myskill\skills\course-report
+```
+
+所以**改这个仓库，WorkBuddy 立刻生效**，不存在"改了一份另一份没改"的两边打架。重新打开 WorkBuddy 或新建会话即可加载。
+
+### 给别人用
 
 ```bash
 # Windows Git Bash
-cp -r skills/course-report ~/.workbuddy/skills/
+git clone https://github.com/ham0626/skills.git
+cp -r skills/skills/course-report ~/.workbuddy/skills/
 ```
 
 装完重启 WorkBuddy 或新建会话，skill 就会出现在技能列表里。
 
-### 方式二：让 WorkBuddy 现场读
-
-```bash
-# 在本仓库根目录
-codebuddy "读 skills/course-report/SKILL.md，按里面的流程帮我做一次课程汇报"
-```
-
-### 方式三：直接看
+### 直接看
 
 `skills/course-report/SKILL.md` 是纯 Markdown，直接读也能用。
 
@@ -68,6 +71,14 @@ skills/course-report/
 ```
 
 这套结构不是我拍脑袋定的，是 WorkBuddy 官方 `skill-creator` 的规范：说明保持在 5k 词以内，细节丢 `references/`，模板丢 `assets/`，AI 助理按需加载 —— 上下文省着用。
+
+---
+
+## 开发约定
+
+- **单一真源**：只改这个仓库（`D:\03coding\myskill`），本机安装位置是它的 junction，改完即生效。
+- **一条 skill 一个目录**：`skills/<name>/`，目录名 = skill 名。
+- **不改别人的 skill**：`~/.workbuddy/skills/` 下其他 skill 各自独立，不动。
 
 ---
 
