@@ -50,6 +50,8 @@ C:\Users\15328\.workbuddy\skills\delivery-no-pseudoblock
 所以**改这个仓库，WorkBuddy 立刻生效**，不存在"改了一份另一份没改"的两边打架。重新打开 WorkBuddy 或新建会话即可加载。
 
 > `delivery-no-pseudoblock` 原本是技能商店装的包，被 marketplace 更新覆盖过一次。为了保住本地加的检测项，它现在也纳入了本仓库 —— 用 junction 接管，商店再更新也不会把改动冲掉。
+>
+> 仓库里的 `_icon.png`（400KB 二进制）是**入库**的：安装位置是 junction，仓库即安装目录，图标必须跟着仓库走，别人 clone 下来才能正常显示技能图标。
 
 ### 给别人用
 
