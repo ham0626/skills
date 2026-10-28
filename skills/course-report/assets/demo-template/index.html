@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【汇报标题】· 纵深汇报</title>
+<style>
+  :root{
+    --bg:#050805;            /* 暗黑底，换亮色改这里 */
+    --primary:#6fdc4a;       /* 主题色（毒性绿示例） */
+    --primary-bright:#9bff7a;
+    --glow:rgba(111,220,74,.55);
+    --alert:#ff3b3b;         /* 警告红 */
+    --text:#e8f5e4;
+    --muted:#9bbf9b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    overflow:hidden;
+  }
+  .slide{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:6vh 8vw}
+  .slide.active{display:flex;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:scale(.99)}to{opacity:1;transform:none}}
+  .slide-inner{max-width:1000px;width:100%;text-align:center}
+  h1{font-size:54px;letter-spacing:4px;margin-bottom:18px;text-shadow:0 0 22px var(--glow)}
+  h2{font-size:34px;letter-spacing:2px;margin-bottom:22px;color:var(--primary-bright)}
+  p{font-size:19px;line-height:1.8;color:var(--muted);margin:10px 0}
+  .kicker{color:var(--primary);font-size:15px;letter-spacing:6px;margin-bottom:14px}
+
+  /* 导航提示 */
+  .nav-hint{position:fixed;bottom:18px;right:24px;color:var(--muted);font-size:13px;opacity:.6;z-index:50}
+  .counter{position:fixed;bottom:18px;left:24px;color:var(--muted);font-size:13px;opacity:.6;z-index:50}
+
+  /* 事故树 */
+  .tree-wrap{width:100%;max-width:920px;margin:0 auto}
+  svg{width:100%;height:auto}
+  .node rect,.node path{fill:#0c140c;stroke:var(--primary);stroke-width:2;cursor:pointer;transition:.2s}
+  .node:hover rect,.node:hover path{fill:#13241a;filter:drop-shadow(0 0 8px var(--glow))}
+  .node text{fill:var(--text);font-size:14px;pointer-events:none}
+  .edge{stroke:var(--muted);stroke-width:1.5;fill:none;opacity:.6}
+
+  /* 弹窗 */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:200;padding:6vh 8vw}
+  .modal.show{display:flex}
+  .modal-box{background:#0c140c;border:1px solid var(--primary);border-radius:14px;max-width:640px;padding:34px 38px;box-shadow:0 0 40px var(--glow)}
+  .modal-box h3{color:var(--primary-bright);font-size:24px;margin-bottom:14px}
+  .modal-box .q{color:var(--text);font-size:18px;margin-top:18px;border-left:3px solid var(--alert);padding-left:14px}
+
+  /* 瑞士奶酪 */
+  .cheese-row{display:flex;gap:14px;justify-content:center;align-items:center;margin:30px 0;flex-wrap:wrap}
+  .cheese{width:120px;height:120px;border-radius:10px;background:var(--primary);opacity:.85;position:relative;transition:transform 1s ease,opacity .6s}
+  .cheese .hole{position:absolute;background:var(--bg);border-radius:50%}
+  .cheese-label{font-size:13px;color:var(--muted);margin-top:8px}
+  .cheese-wrap{text-align:center}
+  .blink{animation:blink 1s steps(2,start) infinite}
+  @keyframes blink{50%{opacity:.15}}
+  .warn{font-size:40px;color:var(--alert);margin-top:10px}
+
+  /* 画廊 + 灯箱 */
+  .gallery{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .gitem img{width:220px;height:140px;object-fit:cover;border:1px solid var(--primary);border-radius:8px;cursor:zoom-in;transition:transform .2s,box-shadow .2s}
+  .gitem img:hover{transform:scale(1.04);box-shadow:0 0 22px var(--glow)}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:300;cursor:zoom-out}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:90vw;max-height:80vh;border:1px solid var(--primary);border-radius:8px}
+  .lightbox p{color:var(--muted);margin-top:14px}
+
+  /* 谢谢页 */
+  .thanks-bg{position:absolute;inset:0;background:url('assets/【底图名】.png') center/cover no-repeat;filter:grayscale(1) brightness(.40);opacity:.60}
+  .thanks-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,5,.85),rgba(5,8,5,.92))}
+  .thanks-title{font-size:66px;color:var(--primary-bright);letter-spacing:10px;text-shadow:0 0 26px var(--glow),0 2px 10px #000}
+</style>
+</head>
+<body>
+
+<!-- 0 封面 -->
+<section class="slide active" data-i="0">
+  <div class="slide-inner">
+    <div class="kicker">【课程名】· 翻转课堂</div>
+    <h1>【汇报主标题】</h1>
+    <p>【一句话副标题：纵深哪一点】</p>
+  </div>
+</section>
+
+<!-- 1 钩子：流行文化 vs 现实 -->
+<section class="slide" data-i="1">
+  <div class="slide-inner">
+    <h2>【钩子】当 XX 走进现实</h2>
+    <p>【流行文化桥段：如生化危机病毒泄露】——它抓住的是"看不见的失控"的恐惧。</p>
+    <p>但现实里没有浣熊市。真正的失控，长这样 →</p>
+  </div>
+</section>
+
+<!-- 2 顶事件 -->
+<section class="slide" data-i="2">
+  <div class="slide-inner">
+    <h2>顶事件：【要深挖的那一个事故 / 失控】</h2>
+    <p>【一句话交代真实锚点事件 + 时间 + 出处，如卫健委 20XX 通报】</p>
+  </div>
+</section>
+
+<!-- 3 交互事故树（点击节点弹题） -->
+<section class="slide" data-i="3">
+  <div class="slide-inner">
+    <h2>事故树：为什么会发生</h2>
+    <div class="tree-wrap">
+      <svg viewBox="0 0 920 420">
+        <!-- 顶事件 -->
+        <g class="node" data-node="top"><rect x="360" y="20" width="200" height="48" rx="8"/><text x="460" y="49" text-anchor="middle">顶事件</text></g>
+        <!-- 中间事件 -->
+        <g class="node" data-node="m1"><rect x="120" y="150" width="200" height="48" rx="8"/><text x="220" y="179" text-anchor="middle">中间事件 A</text></g>
+        <g class="node" data-node="m2"><rect x="600" y="150" width="200" height="48" rx="8"/><text x="700" y="179" text-anchor="middle">中间事件 B</text></g>
+        <!-- 基本事件 -->
+        <g class="node" data-node="b1"><rect x="40" y="320" width="180" height="44" rx="8"/><text x="130" y="347" text-anchor="middle">基本事件 1</text></g>
+        <g class="node" data-node="b2"><rect x="240" y="320" width="180" height="44" rx="8"/><text x="330" y="347" text-anchor="middle">基本事件 2</text></g>
+        <g class="node" data-node="b3"><rect x="560" y="320" width="180" height="44" rx="8"/><text x="650" y="347" text-anchor="middle">基本事件 3</text></g>
+        <g class="node" data-node="b4"><rect x="760" y="320" width="150" height="44" rx="8"/><text x="835" y="347" text-anchor="middle">基本事件 4</text></g>
+        <!-- 连线 -->
+        <path class="edge" d="M460 68 L220 150 M460 68 L700 150"/>
+        <path class="edge" d="M220 198 L130 320 M220 198 L330 320 M700 198 L650 320 M700 198 L835 320"/>
+      </svg>
+    </div>
+    <p style="font-size:15px">点击任意节点，看这一环当时发生了什么 + 一个问题。</p>
+  </div>
+</section>
+
+<!-- 4 瑞士奶酪动画 -->
+<section class="slide" data-i="4">
+  <div class="slide-inner">
+    <h2>防线为何同时失守</h2>
+    <div class="cheese-row" id="cheeseRow">
+      <div class="cheese-wrap"><div class="cheese" data-c="1"><div class="hole" style="width:26px;height:26px;left:30px;top:34px"></div></div><div class="cheese-label">制度</div></div>
+      <div class="cheese-wrap"><div class="cheese" data-c="2"><div class="hole" style="width:24px;height:24px;left:70px;top:60px"></div></div><div class="cheese-label">培训</div></div>
+      <div class="cheese-wrap"><div class="cheese" data-c="3"><div class="hole" style="width:28px;height:28px;left:40px;top:70px"></div></div><div class="cheese-label">设备</div></div>
+      <div class="cheese-wrap"><div class="cheese" data-c="4"><div class="hole" style="width:22px;height:22px;left:60px;top:30px"></div></div><div class="cheese-label">监管</div></div>
+    </div>
+    <div class="warn blink" id="warnSign" style="visibility:hidden">⚠</div>
+    <p>所有孔洞刚好对齐的那一瞬，事故就发生了。</p>
+  </div>
+</section>
+
+<!-- 5 后果 + 画廊（点击放大） -->
+<section class="slide" data-i="5">
+  <div class="slide-inner">
+    <h2>后果与证据</h2>
+    <p>【去专业化描述后果；专业串改口语，保留权威表述】</p>
+    <div class="gallery">
+      <div class="gitem"><img src="assets/【报告图1】.png" alt="【图1说明】"></div>
+      <div class="gitem"><img src="assets/【报告图2】.png" alt="【图2说明】"></div>
+      <div class="gitem"><img src="assets/【报告图3】.png" alt="【图3说明】"></div>
+    </div>
+    <p style="font-size:14px">来源：【官方通报 / 法规 / 报告出处】</p>
+  </div>
+</section>
+
+<!-- 6 回到我们 -->
+<section class="slide" data-i="6">
+  <div class="slide-inner">
+    <h2>回到我们自己</h2>
+    <p>【这一环对我们（课程 / 专业 / 日常）意味着什么，可落到行动建议】</p>
+  </div>
+</section>
+
+<!-- 7 谢谢聆听 -->
+<section class="slide thanks-slide" data-i="7">
+  <div class="thanks-bg"></div><div class="thanks-scrim"></div>
+  <div class="slide-inner">
+    <h1 class="thanks-title">谢谢聆听</h1>
+    <p>现实没有浣熊市，但每一次"看不见的失控"，都值得被认真对待。</p>
+    <p style="margin-top:14px">— 【主题】· 翻转课堂汇报 —</p>
+  </div>
+</section>
+
+<!-- 弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3 id="mTitle"></h3>
+    <p id="mBody"></p>
+    <div class="q" id="mQ"></div>
+  </div>
+</div>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox">
+  <img id="lbimg" src="" alt="">
+  <p id="lbcap"></p>
+</div>
+
+<div class="counter" id="counter"></div>
+<div class="nav-hint">→ / 空格 翻页</div>
+
+<script>
+  // 节点弹窗数据：把每个基本/中间事件填上"发生了什么 + 问题"
+  var NODES={
+    top:["顶事件","【这一事故是什么】","问题：它为什么值得深挖？"],
+    m1:["中间事件 A","【导致顶事件的直接原因】","问题：这一环本该被哪道防线拦住？"],
+    m2:["中间事件 B","【另一条因果链】","问题：……"],
+    b1:["基本事件 1","【最底层失效，按 5M1E 归类：人/机/物/环/法】","问题：当时具体哪一步没做到？"],
+    b2:["基本事件 2","【底层失效】","问题：……"],
+    b3:["基本事件 3","【底层失效】","问题：……"],
+    b4:["基本事件 4","【底层失效】","问题：……"]
+  };
+  function openModal(id){
+    var d=NODES[id]; if(!d) return;
+    document.getElementById('mTitle').textContent=d[0];
+    document.getElementById('mBody').textContent=d[1];
+    document.getElementById('mQ').textContent="▶ "+d[2];
+    document.getElementById('modal').classList.add('show');
+  }
+  document.querySelectorAll('[data-node]').forEach(function(el){
+    el.addEventListener('click',function(){openModal(el.getAttribute('data-node'));});
+  });
+  document.getElementById('modal').addEventListener('click',function(){this.classList.remove('show');});
+
+  // 灯箱
+  document.querySelectorAll('.gitem img').forEach(function(im){
+    im.addEventListener('click',function(){
+      document.getElementById('lbimg').src=im.src;
+      document.getElementById('lbcap').textContent=im.alt||'';
+      document.getElementById('lightbox').classList.add('show');
+    });
+  });
+  document.getElementById('lightbox').addEventListener('click',function(){this.classList.remove('show');});
+
+  // 翻页
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var cur=0;
+  function show(i){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach(function(s,j){s.classList.toggle('active',j===cur);});
+    document.getElementById('counter').textContent=(cur+1)+' / '+slides.length;
+    if(cur===4) playCheese();
+  }
+  function playCheese(){
+    var cheeses=document.querySelectorAll('.cheese');
+    cheeses.forEach(function(c,i){c.style.transform='translateX(0)';});
+    setTimeout(function(){document.getElementById('warnSign').style.visibility='visible';},1100);
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();show(cur+1);}
+    if(e.key==='ArrowLeft'){show(cur-1);}
+  });
+  show(0);
+</script>
+</body>
+</html>
