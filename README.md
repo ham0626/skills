@@ -11,6 +11,7 @@
 | Skill | 一句话 | 状态 |
 |---|---|---|
 | [`course-report`](skills/course-report/) | 课程汇报 / 翻转课堂演示：只深挖一个问题点，不把课堂内容横向重讲一遍 | ✅ 可用 |
+| [`delivery-no-pseudoblock`](skills/delivery-no-pseudoblock/) | 交付前强制自检闸门：每次交付前逐项扫描，把"把活推回用户 / 抢跑动手"挡在发送之前 | ✅ 可用（v1.1.0，本地加装 D13） |
 
 > 每个 skill 目录下都有 `SKILL.md`（说明书）、`references/`（按需加载的详细资料）、`assets/`（可直接复用的模板文件）。
 
@@ -41,9 +42,14 @@
 ```
 C:\Users\15328\.workbuddy\skills\course-report
   →（junction）→ D:\03coding\myskill\skills\course-report
+
+C:\Users\15328\.workbuddy\skills\delivery-no-pseudoblock
+  →（junction）→ D:\03coding\myskill\skills\delivery-no-pseudoblock
 ```
 
 所以**改这个仓库，WorkBuddy 立刻生效**，不存在"改了一份另一份没改"的两边打架。重新打开 WorkBuddy 或新建会话即可加载。
+
+> `delivery-no-pseudoblock` 原本是技能商店装的包，被 marketplace 更新覆盖过一次。为了保住本地加的检测项，它现在也纳入了本仓库 —— 用 junction 接管，商店再更新也不会把改动冲掉。
 
 ### 给别人用
 
@@ -79,6 +85,8 @@ skills/course-report/
 - **单一真源**：只改这个仓库（`D:\03coding\myskill`），本机安装位置是它的 junction，改完即生效。
 - **一条 skill 一个目录**：`skills/<name>/`，目录名 = skill 名。
 - **不改别人的 skill**：`~/.workbuddy/skills/` 下其他 skill 各自独立，不动。
+- **商店装的包要改，先接管再改**：直接改 marketplace 装的 skill 目录，下次商店更新就没了。正确做法是拷进本仓库 → 装 junction → 再改。
+- **备份不入库**：`.backup/` 放技能商店原版备份，本地留着即可。
 
 ---
 
@@ -101,3 +109,23 @@ skills/course-report/
 ---
 
 *这些 skill 大多是从真实作业里长出来的 —— 先踩坑，再把坑填成流程。*
+
+---
+
+## 附：`delivery-no-pseudoblock` 的本地改动
+
+这个 skill 原本从技能商店安装。v1.1.0 是我本地加的一版，多了 **D13「越界动手」**检测项：
+
+> 用户明确要求"先停 / 等我说"或还在讨论方向时，如果我自己产出了可运行产物（HTML/CSS/JS demo、页面实现、动画稿），就算命中。
+
+它拦的是**顺序越界**——在用户还没说"开始"时先动手。跟原有的 D2/D3 不冲突：D2/D3 管"该做的没做、把活推回用户"，D13 管"不该做的做了、抢跑"。
+
+授权只能来自用户**明确点名要**。下面三类话**不算授权**：
+
+| 用户说 | 为什么不算 |
+|---|---|
+| "挺有意思""这个不错""你都做 demo 吧" | 表达兴趣 / 偏好，指向的是方向不是动手 |
+| "我想让 X 有 Y""这里没有线性感" | 描述需求 |
+| "我的意思是融合起来更好" | 纠正我的理解 —— 方向变了，不是"照做" |
+
+这条是 2026-10-28 被用户喊停两次之后立的规矩，写成检测项而不是只写进记忆，才不至于每次换个项目就重犯。
